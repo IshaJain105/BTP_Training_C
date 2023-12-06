@@ -1,0 +1,3 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="donald.controller.Main">
+    <Button text="Load Data" press ="onLoadData" icon="sap-icon://supplier"></Button>
+</mvc:View>

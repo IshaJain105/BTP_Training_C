@@ -1,23 +1,26 @@
 package com.btptraining.dbboot.Configuration;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-//import org.eclipse.persistence.internal.jpa.EntityManagerFactoryProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.cloud.service.relational.DataSourceConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
-import com.btptraining.dbboot.Entities.*;
+import com.btptraining.dbboot.Entities.Vendor;
+import com.zaxxer.hikari.HikariDataSource;
 
 //@Profile({"local", "cf-test", "cf-dev","cf-prod"})
 @Configuration

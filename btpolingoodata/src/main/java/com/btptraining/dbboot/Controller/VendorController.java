@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -22,45 +23,77 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class VendorController {
 
     @Autowired
-    private VendorService myVendorService;
+    private VendorService myVendorSrv;
 
-    @RequestMapping(value = "/vendors")
+    // GET_ENTITY_SET
+    // Test URL - http://localhost:8080/vendors
+    @RequestMapping("/vendors")
     public List<Vendor> getAll() {
-        return myVendorService.getAllVendors();
+        return myVendorSrv.getAllVendors();
     }
 
-    @RequestMapping(value = "/vendor/{id}")
-    public Optional<Vendor> getVendorById(@PathVariable("id") String code) {
-        return myVendorService.getVendorById(code);
-    }
-
+    // CREATE_ENTITY
+    // POST - http://localhost:8080/vendors
+    // {
+    // "code": "",
+    // "companyName": "Anubhav Trainings",
+    // "contactPerson": "Anubhav",
+    // "firstName": "Mianakshi",
+    // "lastName": "Sen",
+    // "website": "www.anubhavtrainings.com",
+    // "email": "contact@anubhavtrainings.com",
+    // "status": 1,
+    // "regDate": "2024-01-01"
+    // }
     @PostMapping("/vendors")
-    public Vendor createVendor(@RequestBody Vendor newVendor) {
-        return myVendorService.addVendor(newVendor);
+    public Vendor createVendor(@RequestBody Vendor myVendor) {
+        System.out.println(myVendor);
+        return myVendorSrv.createVendor(myVendor);
     }
 
-    @PutMapping(value = "/updateVendor/{id}")
-    public Vendor updateVendorById(@PathVariable String id, @RequestBody Vendor vendorData) {
-        return myVendorService.updateVendorById(id, vendorData);
+    // GET_ENTITY
+    // GET - http://localhost:8080/vendor/---your own generated id
+    // Exercise: Implement ReadSingleVendorData by Id, Update Vendor, Delete Vendor
+    @RequestMapping("/vendor/{vendorCode}")
+    public Optional<Vendor> getVendorById(@PathVariable("vendorCode") String code) {
+        return myVendorSrv.getVendorById(code);
     }
 
-    @DeleteMapping("/deleteVendor/{id}")
-    public String deleteVendorById(@PathVariable String id) {
-        return myVendorService.deleteVendor(id);
-    }
-
-    // @RequestMapping(value = "/vendor/company/{id}")
-    // public List<Vendor> getVendorByCompanyName(@PathVariable("id") String company) {
-    //     return myVendorService.getVendorByCompanyName(company);
+    // UPDATE_ENTITY
+    // PUT - http://localhost:8080/vendor/--your own vendor id
+    // {
+    // "companyName": "IBM incorporation",
+    // "contactPerson": "Ananya",
+    // "firstName": "Roger",
+    // "lastName": "Morrison",
+    // "website": "www.ibm.com",
+    // "email": "roger@ibm.com",
+    // "status": 1,
+    // "regDate": "2024-02-01"
     // }
 
-    @RequestMapping(value = "/vendor/company")
-    public List<Vendor> getVendorByCompanyName(@RequestParam String company) {
-        return myVendorService.getVendorByCompanyName(company);
+    @RequestMapping(method = RequestMethod.PUT, value = "/vendor/{vendorId}")
+    public Vendor updateVendor(@PathVariable("vendorId") String vendorCode,
+            @RequestBody Vendor vendor) {
+        return myVendorSrv.updateVendorById(vendorCode, vendor);
     }
 
-    @RequestMapping(value = "/vendor/email/{id}")
-    public List<Vendor> getVendorByEmailType(@PathVariable("id") String email) {
-        return myVendorService.getVendorByEmailType(email);
+    // DELETE_ENTITY
+    // DELETE http://localhost:8080/vendor/--own vendor id
+    @RequestMapping(value = "/vendor/{vendorId}", method = RequestMethod.DELETE)
+    public String requestMethodName(@PathVariable("vendorId") String vendorId) {
+        return myVendorSrv.deleteVendor(vendorId);
+    }
+
+    // GET http://localhost:8080/vendor/search?company=SAP
+    @RequestMapping("/vendor/search")
+    public List<Vendor> searchByCompany(@RequestParam String company) {
+        return myVendorSrv.getCustomerByCompanyName(company);
+    }
+
+    // GET http://localhost:8080/vendor/lookup/gmail
+    @RequestMapping("/vendor/lookup/{emailId}")
+    public List<Vendor> searchVendorByEmailId(@PathVariable("emailId") String emailId) {
+        return myVendorSrv.searchCustomerByEmailId(emailId);
     }
 }

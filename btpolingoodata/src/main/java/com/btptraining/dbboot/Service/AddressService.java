@@ -13,20 +13,17 @@ public class AddressService {
     @Autowired
     IAddressPersistence addressDB;
 
-    // get all addresses
-    public List<Address> getAllAddresses() {
+    public List<Address> getAddresses() {
         return addressDB.findAll();
     }
 
-    // get single address using address id
-    public Optional<Address> getAddressById(String addressId) {
+    public Optional<Address> getSingleAddress(String addressId) {
         return addressDB.findById(addressId);
     }
 
-    // create new address except for country = USA
     public Address createAddress(Address addressData) {
         if (addressData.getCountry() == "USA") {
-            throw new Error("The USA as country not alllowed. ");
+            throw new Error("The USA as country not allowed");
         }
         return addressDB.save(addressData);
     }

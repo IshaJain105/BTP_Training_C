@@ -10,43 +10,48 @@ import com.btptraining.dbboot.Entities.Vendor;
 
 @Component
 public class VendorService {
+
     @Autowired
     IVendorPersistence vendorDB;
-    
-    // read all vendors - return a internal table(ITab)
+
+    // Read all vendors - Return a internal table
     public List<Vendor> getAllVendors() {
+        // Fire SELECT * FROM dbtab
         return vendorDB.findAll();
     }
 
-    // read a single vendor using Key
-    public Optional<Vendor> getVendorById(String VendorId) {
-        return vendorDB.findById(VendorId);
+    // Read single vendor by KEY - READ TABLE itab WITH KEY
+    public Optional<Vendor> readVendorById(String vendorId) {
+        return vendorDB.findById(vendorId);
     }
 
-    // add new vendor(append)
-    public Vendor addVendor(Vendor newVendor) {
+    // Add new record to vendors - APPEND wa to ITAB
+    public Vendor createVendor(Vendor newVendor) {
+        // logic - if vendor is there update that else create
         return vendorDB.save(newVendor);
     }
 
-    // updating vendor using id
     public Vendor updateVendorById(String vendorId, Vendor vendorData) {
+        // Optional<Vendor> vendorFound = vendorDB.findById(vendorId);
+        // vendorFound.setCompanyName(vendorData.getCompanyName());
         return vendorDB.save(vendorData);
     }
 
-    // deleting vendor using id
     public String deleteVendor(String vendorId) {
         vendorDB.deleteById(vendorId);
-        return "Data deleted Successfully.";
+        return "Object was deleted";
     }
 
-    //get by company name
-    public List<Vendor> getVendorByCompanyName(String company) {
-        return vendorDB.getByCompanyName(company);
+    public Optional<Vendor> getVendorById(String code) {
+        return vendorDB.findById(code);
     }
 
-    //get by email type
-    public List<Vendor> getVendorByEmailType(String type) {
-        return vendorDB.getByEmailType(type);
+    public List<Vendor> getCustomerByCompanyName(String companyName) {
+        return vendorDB.findByCompanyName(companyName);
+    }
+
+    public List<Vendor> searchCustomerByEmailId(String emailId) {
+        return vendorDB.lookupVendorByEmailId(emailId);
     }
 
 }

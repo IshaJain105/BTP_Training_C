@@ -15,22 +15,25 @@ import com.btptraining.dbboot.Service.AddressService;
 
 @RestController
 public class AddressController {
+
     @Autowired
-    private AddressService myAddressService;
+    AddressService addressSrv;
 
-    @RequestMapping("/addresses")
+    // Ctrl + to ZOOM IN and - for ZOOM OUT
+    // GET_ENTITYSET
+    @RequestMapping("/addressess")
     public List<Address> getAddresses() {
-        return myAddressService.getAllAddresses();
+        return addressSrv.getAddresses();
     }
 
-    @RequestMapping("/address/{id}")
-    public Optional<Address> getAddressById(@PathVariable("id") String addressId) {
-        return myAddressService.getAddressById(addressId);
+    @RequestMapping("/address/{addressId}")
+    public Optional<Address> getVendorById(@PathVariable("addressId") String addressId) {
+        return addressSrv.getSingleAddress(addressId);
     }
 
-    @PostMapping("/createAddress")
-    public Address createAddress(@RequestBody Address AddressData) {
-        return myAddressService.createAddress(AddressData);
+    @PostMapping("/address")
+    public Address createAddresses(@RequestBody Address payload) {
+        return addressSrv.createAddress(payload);
     }
 
 }
